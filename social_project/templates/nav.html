@@ -1,5 +1,5 @@
-<nav class="nav nav-pills pr-5 pl-5">
-    <a class="nav-item nav-link active" href="#">Главная</a>
-    <a class="nav-item nav-link" href="#">Истории</a>
-    <a class="nav-item nav-link" href="#">Пользователи</a>
+<nav class="nav nav-pills pr-5 pl-5 flex-grow-1">
+    <a class="nav-item nav-link{% if page == 'index' %} active{% endif %}" href="{% url 'index' %}">Главная</a>
+    <a class="nav-item nav-link{% if page == 'stories' %} active{% endif %}" href="{% url 'stories' %}">Истории</a>
+    <a class="nav-item nav-link{% if page == 'users' %} active{% endif %}" href="#">Пользователи</a>
 </nav>

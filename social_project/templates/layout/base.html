@@ -16,24 +16,26 @@
             <div class="">
                 <img src="{% static 'app/logo.svg' %}" width="150" height="150" alt="Logo">
             </div>
-            {% nav %}
+            {% block nav %}{% endblock %}
             {% if user.is_authenticated or request.resolver_match.url_name != 'index' %}
             <div class="align-items-center">
                 {% if user.is_authenticated %}
                 <span class="mr-2">Привет,</span>
-                <a href="{% url 'user' user.profile.username%}" class="btn btn-info mr-2">{{ user }}</a>
-                <a href="{% url 'logout' %}" class="btn btn-info">Выйти</a>
+                <a href="{# {% url 'user' user.profile.username%} #}" class="btn btn-info mr-2">{{ user }}</a>
+                <a href="{# {% url 'sign_out' %} #}" class="btn btn-info">Выйти</a>
                 {% else %}
-                <a href="{% url 'signup' %}" class="btn btn-info mr-2">Зарегистрироваться</a>
-                <a href="{% url 'signin' %}" class="btn btn-info">Войти</a>
+                <a href="{# {% url 'sign_up' %} #}" class="btn btn-info mr-2">Зарегистрироваться</a>
+                <a href="{# {% url 'sign_in' %} #}" class="btn btn-info">Войти</a>
                 {% endif %}
             </div>
         {% endif %}
         </header>
         <main class="pb-3">
-            {% block content %}
 
-            {% endblock %}
+            <h1 class="display-2 text-center mb-4">{% block h1 %}{% endblock %}</h1>
+
+            {% block content %}{% endblock %}
+
         </main>
         <footer class="pt-4 pb-4 text-center">
             <p>Сделано Александром на Django.</p>
