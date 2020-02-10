@@ -16,11 +16,12 @@
 {% block content %}
     <div class="d-flex flex-column align-items-center">
         {% if user.is_authenticated %}
+            <h2 class="text-center mb-4">Нам очень интересно.</h2>
             <a class="w-50 m-auto btn-block btn btn-info btn-lg" href="{# {% url 'add_story' %} #}">Рассказать историю</a>
         {% else %}
             <h2 class="text-center mb-4">Но сначала мы должны понять, кто ты.</h2>
-            <a class="w-50 btn-block btn btn-info btn-lg" href="{# {% url 'add_story' %} #}">Войти</a>
-            <a class="w-50 btn-block btn btn-info btn-lg" href="{# {% url 'add_story' %} #}">Зарегистрироваться</a>
+            <a class="w-50 btn-block btn btn-info btn-lg" href="{% url 'sign_in' %}">Войти</a>
+            <a class="w-50 btn-block btn btn-info btn-lg" href="{% url 'sign_up' %}">Зарегистрироваться</a>
         {% endif %}
     </div>
 {% endblock %}
