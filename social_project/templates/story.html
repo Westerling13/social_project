@@ -26,7 +26,13 @@
                 {% endif %} 
             </div>
         </header>
-        <p>{{ story.html_text|safe }}</p>
+        <p>
+            {% if story.as_md %}
+                {{ story.html_text|safe }}
+            {% else %}
+                {{ story.html_text }}
+            {% endif %}
+        </p>
     </section>
 
 {% endblock %}
