@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
 from pytils.translit import slugify
+from markdown2 import markdown
 
 
 class Profile(models.Model):
@@ -45,7 +46,9 @@ class Story(models.Model):
     """Модель истории"""
     author = models.ForeignKey(User, verbose_name='Автор', on_delete=models.CASCADE)
     title = models.CharField('Заголовок', max_length=100)
-    text = models.TextField('Текст')
+    # text = models.TextField('Текст')
+    markdown_text = models.TextField('Markdown-текст', default='', help_text='Тест в формате Markdown')
+    html_text = models.TextField('Обработанный текст', editable=False, default='')
     creation_date = models.DateTimeField('Дата создания', auto_now_add=True)
     edit_date = models.DateTimeField('Дата редактирования', auto_now=True)
     publication_date = models.DateTimeField('Дата публикации', default=timezone.now())
@@ -55,6 +58,9 @@ class Story(models.Model):
     def save(self, *args, **kwargs):
         url = self.title.lower()
         self.url = slugify(url)
+        self.html_text = markdown(self.markdown_text)
+        print(self.markdown_text)
+        print(self.html_text)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):

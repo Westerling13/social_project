@@ -26,7 +26,7 @@
                 {% endif %} 
             </div>
         </header>
-        <p>{{ story.text }}</p>
+        <p>{{ story.html_text|safe }}</p>
     </section>
 
 {% endblock %}

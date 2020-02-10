@@ -41,6 +41,12 @@ class StoryAddView(LoginRequiredMixin, CreateView):
     form_class = StoryAddForm
     template_name = 'story_add.html'
 
+    def form_valid(self, form):
+        story = form.save(commit=False)
+        story.author = self.request.user
+        story.save()
+        return redirect('stories')
+
 
 class SignUpView(CreateView):
     template_name = 'sign_up.html'

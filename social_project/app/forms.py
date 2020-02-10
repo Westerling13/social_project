@@ -14,4 +14,4 @@ class SignUpForm(UserCreationForm):
 class StoryAddForm(ModelForm):
     class Meta:
         model = Story
-        fields = ('title', 'text', 'published')
+        fields = ('title', 'markdown_text', 'published')
