@@ -1,0 +1,23 @@
+{% extends 'layout/base.html' %}
+{% load bootstrap4 %}
+{% load app_tags %}
+
+{% block title %}
+    Рассказать историю
+{% endblock %}
+
+{% block nav %}
+    {% nav %}
+{% endblock %}
+
+{% block h1 %}
+    Расскажи свою историю!
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-lg btn-info">Поделиться</button>
+    </form>
+{% endblock %}

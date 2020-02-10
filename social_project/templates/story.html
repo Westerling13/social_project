@@ -1,0 +1,32 @@
+{% extends 'layout/base.html' %}
+{% load app_tags %}
+
+{% block title %}
+    {{ story.url }}
+{% endblock %}
+
+{% block nav %}
+    {% nav page=None %}
+{% endblock %}
+
+{% block h1 %}
+    {{ story.title }}
+{% endblock %}
+
+{% block content %}
+
+    <section>
+        <header class="mb-4 d-flex flex-column">
+            <a href="#" class=" mb-3 mx-auto btn btn-lg btn-info">{{ story.author.username }}</a>
+            <div class="m-auto">
+                {% if story.edit_date > story.creation_date %}
+                    <b>{{ story.edit_date }}</b>
+                {% else %}
+                    <b>{{ story.creation_date }}</b>
+                {% endif %} 
+            </div>
+        </header>
+        <p>{{ story.text }}</p>
+    </section>
+
+{% endblock %}

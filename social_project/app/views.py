@@ -3,9 +3,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect
 from django.views import View
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DetailView
 
-from .forms import SignUpForm
+from .forms import SignUpForm, StoryAddForm
 from .models import Story, Profile
 
 
@@ -22,11 +22,24 @@ class UsersListView(LoginRequiredMixin, ListView):
     context_object_name = 'users_list'
 
 
+class StoryView(LoginRequiredMixin, DetailView):
+    login_url = 'sign_in'
+    model = Story
+    template_name = 'story.html'
+    context_object_name = 'story'
+
+
 class StoriesListView(LoginRequiredMixin, ListView):
     login_url = 'sign_in'
     model = Story
     template_name = 'stories.html'
     context_object_name = 'stories_list'
+
+
+class StoryAddView(LoginRequiredMixin, CreateView):
+    login_url = 'sign_in'
+    form_class = StoryAddForm
+    template_name = 'story_add.html'
 
 
 class SignUpView(CreateView):
