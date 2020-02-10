@@ -20,7 +20,7 @@
                     <img src="{{ usr.image.url }}" class="card-img-top" width="200" height="200" alt="User Image">
                     <div class="d-flex card-body justify-content-center flex-column" style="max-width: 200px">
                         <b class="mb-3 card-title text-center">{{ usr.user.username }}</b>
-                        <a href="#" class="btn btn-primary">Просмотреть</a>
+                        <a href="{% url 'profile' usr.user.username %}" class="btn btn-primary">Просмотреть</a>
                     </div>
                 </div>
         {% endfor %}

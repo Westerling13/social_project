@@ -17,7 +17,7 @@
 
     <section>
         <header class="mb-4 d-flex flex-column">
-            <a href="#" class=" mb-3 mx-auto btn btn-lg btn-info">{{ story.author.username }}</a>
+            <a href="{% url 'profile' story.author.username %}" class=" mb-3 mx-auto btn btn-lg btn-info">{{ story.author.username }}</a>
             <div class="m-auto">
                 {% if story.edit_date > story.creation_date %}
                     <b>{{ story.edit_date }}</b>

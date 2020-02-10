@@ -1,7 +1,9 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView, CreateView, DetailView
 
@@ -13,6 +15,31 @@ class IndexView(View):
     def get(self, request):
         context = {}
         return render(request, 'index.html', context=context)
+
+
+# class ProfileView(LoginRequiredMixin, DetailView):
+#     login_url = 'sign_in'
+#     model = User
+#     template_name = 'profile.html'
+#     context_object_name = 'user'
+#     slug_url_kwarg = 'username'
+#     slug_field = 'username'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['profile'] = get_object_or_404(Profile, username=self.slug_url_kwarg)
+#         return context
+
+
+def profile_view(request, username):
+    user = get_object_or_404(User, username=username)
+    profile = get_object_or_404(Profile, user=user)
+    context = {
+        'profile': profile,
+        'usr': user,
+        'is_me': user == request.user
+    }
+    return render(request, 'profile.html', context=context)
 
 
 class UsersListView(LoginRequiredMixin, ListView):
