@@ -24,9 +24,9 @@ class Profile(models.Model):
     last_name = models.CharField('Фамилия', max_length=50)
     email = models.EmailField('Электронный адрес', max_length=50)
     image = models.ImageField('Аватар', upload_to='users/', default='placeholder-200.png')
-    gender = models.CharField('Пол', choices=GENDERS, blank=False, default=GENDERS[0], max_length=9, null=True)
+    gender = models.CharField('Пол', choices=GENDERS, blank=False, default='Не указан', max_length=9, null=True)
     birth_date = models.DateField('Дата рождения', null=True, default=timezone.now)
-    bio = models.TextField('Личная информация', max_length=1000, blank=True)
+    bio = models.TextField('Личная информация', max_length=1000, blank=True, default='')
     is_private = models.BooleanField('Приватный', default=False)
 
     def __str__(self):
@@ -60,11 +60,11 @@ class Story(models.Model):
     edit_date = models.DateTimeField('Дата редактирования', auto_now=True)
     publication_date = models.DateTimeField('Дата публикации', default=timezone.now())
     published = models.BooleanField('Опубликована', default=True)
-    url = models.SlugField('URL', default='', editable=False)
+    slug = models.SlugField('slug', default='', editable=False)
 
     def save(self, *args, **kwargs):
-        url = self.title.lower()
-        self.url = slugify(url)
+        slug = self.title.lower()
+        self.slug = slugify(slug)
         if self.as_md:
             self.html_text = markdown(self.text)
         else:
@@ -72,7 +72,7 @@ class Story(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('story', args=[self.pk, self.url])
+        return reverse('story', args=[self.pk, self.slug])
 
     def __str__(self):
         return self.title
@@ -81,3 +81,16 @@ class Story(models.Model):
         verbose_name = 'История'
         verbose_name_plural = 'Истории'
         ordering = ['-publication_date']
+
+
+class Comment(models.Model):
+    """Модель комментария"""
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор')
+    story = models.ForeignKey(Story, on_delete=models.CASCADE, verbose_name='История')
+    text = models.TextField('Текст')
+    creation_date = models.DateTimeField('Дата создания', auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+        ordering = ['-creation_date']

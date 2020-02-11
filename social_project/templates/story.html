@@ -2,7 +2,7 @@
 {% load app_tags %}
 
 {% block title %}
-    {{ story.url }}
+    {{ story.title }}
 {% endblock %}
 
 {% block nav %}
@@ -11,21 +11,12 @@
 
 {% block h1 %}
     {{ story.title }}
-    {% if user.is_superuser or user == story.author %}
-        <div class="position-absolute d-flex flex-column" style="right: 0; top: 50%; transform: translateY(-50%)">
-            <a href="{% url 'story_edit' story.pk story.url%}" class="btn btn-info mb-2">
-                Редактировать
-            </a>
-            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">Удалить</button>
-        </div>
-
-    {% endif %}
 {% endblock %}
 
 {% block content %}
 
     <section>
-        <header class="mb-4 d-flex flex-column">
+        <header class="mb-4 d-flex flex-column position-relative">
             <a href="{% url 'profile' story.author.username %}" class="mb-3 mx-auto btn btn-lg btn-info">{{ story.author.username }}</a>
             <div class="m-auto">
                 {% if story.edit_date > story.creation_date %}
@@ -35,6 +26,14 @@
                 {% endif %}
 
             </div>
+            {% if user.is_superuser or user == story.author %}
+                <div class="position-absolute d-flex flex-column" style="right: 0; top: 0;">
+                    <a href="{% url 'story_edit' story.pk story.slug %}" class="btn btn-info mb-2">
+                        Редактировать
+                    </a>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">Удалить</button>
+                </div>
+            {% endif %}
         </header>
         <p>
             {% if story.as_md %}
@@ -60,7 +59,7 @@
                 <div class="modal-footer">
                     <form ></form>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
-                    <a href="{% url 'story_delete' story.pk story.url %}" type="button" class="btn btn-primary">Да, удаляйте</a>
+                    <a href="{% url 'story_delete' story.pk story.slug %}" type="button" class="btn btn-primary">Да, удаляйте</a>
                 </div>
             </div>
         </div>
