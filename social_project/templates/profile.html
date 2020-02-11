@@ -50,4 +50,31 @@
             </table>
         </div>
     </section>
+    <section>
+        <h2>Истории пользователя: <span class="text-info">{{ stories.count }}</span></h2>
+        {% if stories %}
+            <ul>
+                {% for story in stories %}
+                    <li class="list-group-item mt-4">
+                        <div class="d-flex align-items-center">
+                            <b class="col-6">{{ story.title }}</b>
+
+                            <div class="col-6 row no-gutters justify-content-between align-items-center">
+                                <b>{{ story.creation_date.date }}</b>
+                                <div class="">
+                                    {% if is_me %}
+                                        <a class="btn btn-info mr-2" href="{% url 'story_edit' story.pk story.url %}">Редактировать</a>
+                                    {% endif %}
+                                    <a class="btn btn-info" href="{% url 'story' story.pk story.url %}">Прочесть</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Пользователь еще не опубликовал ни одной истории.</p>
+        {% endif %}
+
+    </section>
 {% endblock %}

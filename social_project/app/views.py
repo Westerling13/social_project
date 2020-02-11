@@ -18,28 +18,16 @@ class IndexView(View):
         return render(request, 'index.html', context=context)
 
 
-# class ProfileView(LoginRequiredMixin, DetailView):
-#     login_url = 'sign_in'
-#     model = User
-#     template_name = 'profile.html'
-#     context_object_name = 'user'
-#     slug_url_kwarg = 'username'
-#     slug_field = 'username'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['profile'] = get_object_or_404(Profile, username=self.slug_url_kwarg)
-#         return context
-
-
 @login_required(login_url='sign_in')
 def profile_view(request, username):
     user = get_object_or_404(User, username=username)
     profile = get_object_or_404(Profile, user=user)
+    stories = Story.objects.filter(author=user)
     context = {
         'profile': profile,
         'usr': user,
-        'is_me': user == request.user
+        'is_me': user == request.user,
+        'stories': stories
     }
     return render(request, 'profile.html', context=context)
 
@@ -71,6 +59,15 @@ class StoryEditView(LoginRequiredMixin, UpdateView):
         if not user.is_superuser and user != author:
             raise PermissionDenied
         return super().get(*args, **kwargs)
+
+
+@login_required(login_url='sign_in')
+def story_delete(request, **kwargs):
+    story = get_object_or_404(Story, pk=kwargs.get('pk'))
+    if not request.user.is_superuser and request.user != story.author:
+        raise PermissionDenied
+    story.delete()
+    return redirect('stories')
 
 
 class StoriesListView(LoginRequiredMixin, ListView):

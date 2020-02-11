@@ -12,9 +12,13 @@
 {% block h1 %}
     {{ story.title }}
     {% if user.is_superuser or user == story.author %}
-        <a href="{% url 'story_edit' story.pk story.url%}" class="btn btn-info position-absolute" style="right: 0; top: 50%; transform: translateY(-50%)">
-            Редактировать
-        </a>
+        <div class="position-absolute d-flex flex-column" style="right: 0; top: 50%; transform: translateY(-50%)">
+            <a href="{% url 'story_edit' story.pk story.url%}" class="btn btn-info mb-2">
+                Редактировать
+            </a>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">Удалить</button>
+        </div>
+
     {% endif %}
 {% endblock %}
 
@@ -40,5 +44,26 @@
             {% endif %}
         </p>
     </section>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Удалить историю</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Ты уверен, что хочешь удалить свою историю?</p>
+                </div>
+                <div class="modal-footer">
+                    <form ></form>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+                    <a href="{% url 'story_delete' story.pk story.url %}" type="button" class="btn btn-primary">Да, удаляйте</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
