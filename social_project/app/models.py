@@ -14,16 +14,19 @@ from markdown2 import markdown
 class Profile(models.Model):
     """Модель профиля пользователя"""
     GENDERS = [
-        (None, 'Выберите пол'),
+        ('Не указан', 'Не указан'),
         ('Мужской', 'Мужской'),
         ('Женский', 'Женский'),
     ]
 
     user = models.OneToOneField(User, verbose_name='Пользователь', on_delete=models.CASCADE)
+    first_name = models.CharField('Имя', max_length=50)
+    last_name = models.CharField('Фамилия', max_length=50)
+    email = models.EmailField('Электронный адрес', max_length=50)
     image = models.ImageField('Аватар', upload_to='users/', default='placeholder-200.png')
-    gender = models.CharField('Пол', choices=GENDERS, blank=False, default=None, max_length=7, null=True)
+    gender = models.CharField('Пол', choices=GENDERS, blank=False, default=GENDERS[0], max_length=9, null=True)
     birth_date = models.DateField('Дата рождения', null=True, default=timezone.now)
-    bio = models.TextField('Личная информация', max_length=1000)
+    bio = models.TextField('Личная информация', max_length=1000, blank=True)
     is_private = models.BooleanField('Приватный', default=False)
 
     def __str__(self):

@@ -18,18 +18,18 @@
         <div class="col-3 d-flex flex-column align-items-center">
             <img class="mb-3" src="{{ profile.image.url }}" width="200" height="200" alt="User Image">
             {% if is_me %}
-                <a href="#" class="btn btn-info">Настройки</a>
+                <a href="{% url 'settings' %}" class="btn btn-info">Настройки</a>
             {% endif %}
         </div>
         <div class="col-9">
             <table class="table table-borderless">
                 <tr>
                     <th class="w-25">Имя:</th>
-                    <th class="text-info">{{ usr.first_name }}</th>
+                    <th class="text-info">{{ profile.first_name }}</th>
                 </tr>
                 <tr>
                     <th class="w-25">Фамилия:</th>
-                    <th class="text-info">{{ usr.last_name }}</th>
+                    <th class="text-info">{{ profile.last_name }}</th>
                 </tr>
                 <tr>
                     <th class="w-25">Пол:</th>
@@ -41,7 +41,7 @@
                 </tr>
                 <tr>
                     <th class="w-25">Электронный адрес:</th>
-                    <th class="text-info">{{ usr.email }}</th>
+                    <th class="text-info">{{ profile.email }}</th>
                 </tr>
                 <tr>
                     <th class="w-25">О пользователе:</th>

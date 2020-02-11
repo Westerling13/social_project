@@ -5,9 +5,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from django.views.generic import ListView, CreateView, DetailView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView
 
-from .forms import SignUpForm, StoryAddForm
+from .forms import SignUpForm, StoryAddForm, SettingsForm
 from .models import Story, Profile
 
 
@@ -31,6 +31,7 @@ class IndexView(View):
 #         return context
 
 
+@login_required(login_url='sign_in')
 def profile_view(request, username):
     user = get_object_or_404(User, username=username)
     profile = get_object_or_404(Profile, user=user)
@@ -82,6 +83,12 @@ class SignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         user.refresh_from_db()
+        print(user)
+        print(user.profile)
+        user.profile.first_name = form.cleaned_data.get('first_name')
+        user.profile.last_name = form.cleaned_data.get('last_name')
+        user.profile.email = form.cleaned_data.get('email')
+        user.profile.save()
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password1')
         user = authenticate(username=username, password=password)
@@ -95,3 +102,17 @@ class SignInView(LoginView):
 
 class SignOutView(LogoutView):
     template_name = 'sign_out.html'
+
+
+class SettingsView(View):
+    def get(self, request):
+        profile = get_object_or_404(Profile, user=request.user)
+        form = SettingsForm(instance=profile)
+        return render(request, 'profile_edit.html', context={'form': form})
+
+    def post(self, request):
+        profile = get_object_or_404(Profile, user=request.user)
+        form = SettingsForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile', username=request.user.username)
