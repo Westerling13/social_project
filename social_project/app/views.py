@@ -8,8 +8,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
 
-from .forms import SignUpForm, StoryAddForm, SettingsForm
-from .models import Story, Profile
+from .forms import SignUpForm, StoryAddForm, SettingsForm, CommentForm
+from .models import Story, Profile, Comment
 
 
 def index(request):
@@ -40,11 +40,31 @@ class UsersListView(LoginRequiredMixin, ListView):
         return Profile.objects.order_by('-user__last_login')
 
 
-class StoryView(LoginRequiredMixin, DetailView):
-    login_url = 'sign_in'
-    model = Story
-    template_name = 'story.html'
-    context_object_name = 'story'
+# class StoryView(LoginRequiredMixin, DetailView, CreateView):
+#     login_url = 'sign_in'
+#     model = Story
+#     template_name = 'story.html'
+#     context_object_name = 'story'
+#
+#     form_class = CommentForm
+
+class StoryView(LoginRequiredMixin, View):
+    def get(self, request, **kwargs):
+        story = get_object_or_404(Story, pk=kwargs.get('pk'))
+        form = CommentForm()
+        comments = Comment.objects.all()
+
+        return render(request, 'story.html', context={'story': story, 'form': form, 'comments': comments})
+
+    def post(self, request, **kwargs):
+        form = CommentForm(request.POST)
+        story = get_object_or_404(Story, pk=kwargs.get('pk'))
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.story = story
+            comment.save()
+            return redirect('story', pk=kwargs.get('pk'), slug=kwargs.get('slug'))
 
 
 class StoryEditView(LoginRequiredMixin, UpdateView):

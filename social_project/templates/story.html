@@ -1,4 +1,5 @@
 {% extends 'layout/base.html' %}
+{% load bootstrap4 %}
 {% load app_tags %}
 
 {% block title %}
@@ -15,7 +16,7 @@
 
 {% block content %}
 
-    <section>
+    <section class="mb-5">
         <header class="mb-4 d-flex flex-column position-relative">
             <a href="{% url 'profile' story.author.username %}" class="mb-3 mx-auto btn btn-lg btn-info">{{ story.author.username }}</a>
             <div class="m-auto">
@@ -43,6 +44,36 @@
             {% endif %}
         </p>
     </section>
+
+    <section class="mb-3">
+        <hr>
+        <button class="btn btn-info" data-toggle="collapse" data-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
+            Написать своё мнение
+        </button>
+        <div class="collapse mt-3" id="collapseForm">
+            <form method="post">
+                {% csrf_token %}
+                {% bootstrap_field field=form.text show_label=False %}
+                <button type="submit" class="btn btn-info">Отправить</button>
+            </form>
+        </div>
+        <hr>
+    </section>
+
+    <section>
+        <h4 class="mb-4">Комментарии: {{ comments.count }}</h4>
+        <div>
+            {% for comment in comments %}
+                <div class="card mb-3">
+                    <p class="card-header">
+                        <b>{{ comment.author }}</b> - {{ comment.creation_date }}
+                    </p>
+                    <p class="card-body">{{ comment.text }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

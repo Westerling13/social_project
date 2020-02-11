@@ -90,6 +90,9 @@ class Comment(models.Model):
     text = models.TextField('Текст')
     creation_date = models.DateTimeField('Дата создания', auto_now_add=True)
 
+    def __str__(self):
+        return f'{self.author} -> {self.story}'
+
     class Meta:
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'

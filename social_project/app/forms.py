@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 
-from .models import Story, Profile
+from .models import Story, Profile, Comment
 
 
 class SignUpForm(UserCreationForm):
@@ -28,3 +28,9 @@ class SettingsForm(forms.ModelForm):
         fields = (
             'first_name', 'last_name', 'email', 'gender', 'birth_date', 'image', 'bio', 'is_private'
         )
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('text',)
