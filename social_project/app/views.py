@@ -52,7 +52,7 @@ class StoryView(LoginRequiredMixin, View):
     def get(self, request, **kwargs):
         story = get_object_or_404(Story, pk=kwargs.get('pk'))
         form = CommentForm()
-        comments = Comment.objects.all()
+        comments = Comment.objects.filter(story=story)
 
         return render(request, 'story.html', context={'story': story, 'form': form, 'comments': comments})
 
