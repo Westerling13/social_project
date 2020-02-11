@@ -1,10 +1,10 @@
 from django.urls import path
 
-from .views import IndexView, StoriesListView, SignUpView, SignInView, SignOutView, UsersListView, StoryAddView, \
+from .views import index, StoriesListView, SignUpView, SignInView, SignOutView, UsersListView, StoryAddView, \
     StoryView, profile_view, SettingsView, StoryEditView, story_delete
 
 urlpatterns = [
-    path('', IndexView.as_view(), name='index'),
+    path('', index, name='index'),
 
     path('sign_up', SignUpView.as_view(), name='sign_up'),
     path('sign_in', SignInView.as_view(), name='sign_in'),

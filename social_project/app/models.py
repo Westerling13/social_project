@@ -38,6 +38,7 @@ class Profile(models.Model):
     class Meta:
         verbose_name = 'Профиль'
         verbose_name_plural = 'Профили'
+        ordering = ['pk']
 
 
 @receiver(post_save, sender=User)
@@ -79,3 +80,4 @@ class Story(models.Model):
     class Meta:
         verbose_name = 'История'
         verbose_name_plural = 'Истории'
+        ordering = ['-publication_date']

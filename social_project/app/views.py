@@ -12,10 +12,8 @@ from .forms import SignUpForm, StoryAddForm, SettingsForm
 from .models import Story, Profile
 
 
-class IndexView(View):
-    def get(self, request):
-        context = {}
-        return render(request, 'index.html', context=context)
+def index(request):
+    return render(request, 'index.html')
 
 
 @login_required(login_url='sign_in')
@@ -37,6 +35,9 @@ class UsersListView(LoginRequiredMixin, ListView):
     model = Profile
     template_name = 'users.html'
     context_object_name = 'users_list'
+
+    def get_queryset(self):
+        return Profile.objects.order_by('-user__last_login')
 
 
 class StoryView(LoginRequiredMixin, DetailView):
@@ -75,6 +76,9 @@ class StoriesListView(LoginRequiredMixin, ListView):
     model = Story
     template_name = 'stories.html'
     context_object_name = 'stories_list'
+
+    def get_queryset(self):
+        return Story.objects.filter(published=True)
 
 
 class StoryAddView(LoginRequiredMixin, CreateView):

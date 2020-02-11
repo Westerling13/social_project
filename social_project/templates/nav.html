@@ -1,5 +1,8 @@
-<nav class="nav nav-pills pr-5 pl-5 flex-grow-1">
+<nav class="nav nav-pills pr-5 pl-5 flex-grow-1 align-items-center">
     <a class="nav-item nav-link{% if page == 'index' %} active{% endif %}" href="{% url 'index' %}">Главная</a>
     <a class="nav-item nav-link{% if page == 'stories' %} active{% endif %}" href="{% url 'stories' %}">Истории</a>
-    <a class="nav-item nav-link{% if page == 'users' %} active{% endif %}" href="{% url 'users' %}">Пользователи</a>
+    <a class="mr-3 nav-item nav-link{% if page == 'users' %} active{% endif %}" href="{% url 'users' %}">Пользователи</a>
+    {% if context.user.is_authenticated %}
+        <a class="btn btn-info btn-lg" href="{% url 'story_add' %}">Рассказать историю!</a>
+    {% endif %}
 </nav>

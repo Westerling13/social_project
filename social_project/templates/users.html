@@ -16,7 +16,7 @@
 {% block content %}
     <div class="row">
         {% for usr in users_list %}
-                <div class="card mx-2 content-box" style="max-width: 200px; box-sizing: content-box">
+                <div class="card mx-2 mb-2 content-box" style="max-width: 200px; box-sizing: content-box;">
                     <img src="{{ usr.image.url }}" class="card-img-top" width="200" height="200" alt="User Image">
                     <div class="d-flex card-body justify-content-center flex-column">
                         <b class="mb-3 card-title text-center">{{ usr.user.username }}</b>

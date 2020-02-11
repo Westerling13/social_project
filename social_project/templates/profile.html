@@ -22,32 +22,36 @@
             {% endif %}
         </div>
         <div class="col-9">
-            <table class="table table-borderless">
-                <tr>
-                    <th class="w-25">Имя:</th>
-                    <th class="text-info">{{ profile.first_name }}</th>
-                </tr>
-                <tr>
-                    <th class="w-25">Фамилия:</th>
-                    <th class="text-info">{{ profile.last_name }}</th>
-                </tr>
-                <tr>
-                    <th class="w-25">Пол:</th>
-                    <th class="text-info">{{ profile.gender }}</th>
-                </tr>
-                <tr>
-                    <th class="w-25">Дата рождения:</th>
-                    <th class="text-info">{{ profile.birth_date }}</th>
-                </tr>
-                <tr>
-                    <th class="w-25">Электронный адрес:</th>
-                    <th class="text-info">{{ profile.email }}</th>
-                </tr>
-                <tr>
-                    <th class="w-25">О пользователе:</th>
-                    <th class="text-info">{{ profile.bio }}</th>
-                </tr>
-            </table>
+            {% if profile.is_private and not is_me %}
+                <p class="lead">Данные этого пользователя таинственным образом скрыты от посторонних глаз...</p>
+            {% else %}
+                <table class="table table-borderless">
+                    <tr>
+                        <th class="w-25">Имя:</th>
+                        <th class="text-info">{{ profile.first_name }}</th>
+                    </tr>
+                    <tr>
+                        <th class="w-25">Фамилия:</th>
+                        <th class="text-info">{{ profile.last_name }}</th>
+                    </tr>
+                    <tr>
+                        <th class="w-25">Пол:</th>
+                        <th class="text-info">{{ profile.gender }}</th>
+                    </tr>
+                    <tr>
+                        <th class="w-25">Дата рождения:</th>
+                        <th class="text-info">{{ profile.birth_date }}</th>
+                    </tr>
+                    <tr>
+                        <th class="w-25">Электронный адрес:</th>
+                        <th class="text-info">{{ profile.email }}</th>
+                    </tr>
+                    <tr>
+                        <th class="w-25">О пользователе:</th>
+                        <th class="text-info">{{ profile.bio }}</th>
+                    </tr>
+                </table>
+            {% endif %}
         </div>
     </section>
     <section>
