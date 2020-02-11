@@ -1,6 +1,7 @@
 from django.urls import path
 
-from .views import IndexView, StoriesListView, SignUpView, SignInView, SignOutView, UsersListView, StoryAddView, StoryView, profile_view, SettingsView
+from .views import IndexView, StoriesListView, SignUpView, SignInView, SignOutView, UsersListView, StoryAddView, \
+    StoryView, profile_view, SettingsView, StoryEditView
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
@@ -16,4 +17,5 @@ urlpatterns = [
     path('stories/', StoriesListView.as_view(), name='stories'),
     path('stories/add', StoryAddView.as_view(), name='story_add'),
     path('stories/<int:pk>-<str:slug>', StoryView.as_view(), name='story'),
+    path('stories/<int:pk>-<str:slug>/edit', StoryEditView.as_view(), name='story_edit'),
 ]

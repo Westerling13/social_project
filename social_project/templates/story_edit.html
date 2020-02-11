@@ -1,0 +1,23 @@
+{% extends 'layout/base.html' %}
+{% load bootstrap4 %}
+{% load app_tags %}
+
+{% block title %}
+    {{ story.title }}
+{% endblock %}
+
+{% block nav %}
+    {% nav page=None %}
+{% endblock %}
+
+{% block h1 %}
+    {{ story.title }}
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-info">Сохранить</button>
+    </form>
+{% endblock %}

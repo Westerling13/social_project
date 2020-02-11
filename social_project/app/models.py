@@ -71,7 +71,7 @@ class Story(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('story', args=[self.url])
+        return reverse('story', args=[self.pk, self.url])
 
     def __str__(self):
         return self.title

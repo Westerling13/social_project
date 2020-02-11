@@ -32,15 +32,17 @@
             </div>
         {% endif %}
         </header>
-        <main class="pb-3">
+        <main class="pb-3 height-100">
 
-            <h1 class="display-2 text-center mb-4">{% block h1 %}{% endblock %}</h1>
+            <h1 class="display-2 text-center mb-4 position-relative">{% block h1 %}{% endblock %}</h1>
 
             {% block content %}{% endblock %}
 
         </main>
         <footer class="pt-4 pb-4 text-center">
-            <p>Сделано Александром на Django.</p>
+
+            <div>Сделано <a href="https://westerling13.github.io/">Александром</a> в образовательных целях на Django, 2020</div>
+            <small>Исходный код проекта вы можете посмотреть в репозитории на <a href="#">Github</a></small>
         </footer>
     </div>
 </body>

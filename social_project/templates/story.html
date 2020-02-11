@@ -11,19 +11,25 @@
 
 {% block h1 %}
     {{ story.title }}
+    {% if user.is_superuser or user == story.author %}
+        <a href="{% url 'story_edit' story.pk story.url%}" class="btn btn-info position-absolute" style="right: 0; top: 50%; transform: translateY(-50%)">
+            Редактировать
+        </a>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
 
     <section>
         <header class="mb-4 d-flex flex-column">
-            <a href="{% url 'profile' story.author.username %}" class=" mb-3 mx-auto btn btn-lg btn-info">{{ story.author.username }}</a>
+            <a href="{% url 'profile' story.author.username %}" class="mb-3 mx-auto btn btn-lg btn-info">{{ story.author.username }}</a>
             <div class="m-auto">
                 {% if story.edit_date > story.creation_date %}
                     <b>{{ story.edit_date }}</b>
                 {% else %}
                     <b>{{ story.creation_date }}</b>
-                {% endif %} 
+                {% endif %}
+
             </div>
         </header>
         <p>

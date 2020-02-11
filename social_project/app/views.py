@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
@@ -55,6 +56,21 @@ class StoryView(LoginRequiredMixin, DetailView):
     model = Story
     template_name = 'story.html'
     context_object_name = 'story'
+
+
+class StoryEditView(LoginRequiredMixin, UpdateView):
+    login_url = 'sign_in'
+    model = Story
+    template_name = 'story_edit.html'
+    fields = ['title', 'as_md', 'text', 'published']
+
+    def get(self, *args, **kwargs):
+        user = self.request.user
+        pk = kwargs.get('pk')
+        author = Story.objects.get(pk=pk).author
+        if not user.is_superuser and user != author:
+            raise PermissionDenied
+        return super().get(*args, **kwargs)
 
 
 class StoriesListView(LoginRequiredMixin, ListView):
