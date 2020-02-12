@@ -6,7 +6,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from django.views.generic import ListView, CreateView, DetailView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView
 
 from .forms import SignUpForm, StoryAddForm, SettingsForm, CommentForm
 from .models import Story, Profile, Comment
@@ -42,7 +42,7 @@ class UsersListView(LoginRequiredMixin, ListView):
 
 class StoryView(LoginRequiredMixin, View):
     def get(self, request, **kwargs):
-        story = get_object_or_404(Story, pk=kwargs.get('pk'))
+        story = get_object_or_404(Story, pk=kwargs.get('pk'), slug=kwargs.get('slug'))
         form = CommentForm()
         comments = Comment.objects.filter(story=story)
 
@@ -50,7 +50,7 @@ class StoryView(LoginRequiredMixin, View):
 
     def post(self, request, **kwargs):
         form = CommentForm(request.POST)
-        story = get_object_or_404(Story, pk=kwargs.get('pk'))
+        story = get_object_or_404(Story, pk=kwargs.get('pk'), slug=kwargs.get('slug'))
         if form.is_valid():
             comment = form.save(commit=False)
             comment.author = request.user

@@ -1,0 +1,18 @@
+{% extends 'layout/base.html' %}
+{% load app_tags %}
+
+{% block title %}
+    Страница не найдена
+{% endblock %}
+
+{% block nav %}
+    {% nav page=None %}
+{% endblock %}
+
+{% block h1 %}
+    Увы, мы не нашли эту страницу
+{% endblock %}
+
+{% block content %}
+    <h2>Но у нас есть другие.</h2>
+{% endblock %}
