@@ -65,10 +65,10 @@
         <div>
             {% for comment in comments %}
                 <div class="card mb-3">
-                    <p class="card-header">
-                        <b>{{ comment.author }}</b> - {{ comment.creation_date }}
+                    <p class="card-header justify-content-between d-flex">
+                        <b>{{ comment.author }}</b><span>{{ comment.creation_date }}</span>
                     </p>
-                    <p class="card-body">{{ comment.text }}</p>
+                    <p class="card-body mb-0">{{ comment.text }}</p>
                 </div>
             {% endfor %}
         </div>

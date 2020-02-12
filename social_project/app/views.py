@@ -40,14 +40,6 @@ class UsersListView(LoginRequiredMixin, ListView):
         return Profile.objects.order_by('-user__last_login')
 
 
-# class StoryView(LoginRequiredMixin, DetailView, CreateView):
-#     login_url = 'sign_in'
-#     model = Story
-#     template_name = 'story.html'
-#     context_object_name = 'story'
-#
-#     form_class = CommentForm
-
 class StoryView(LoginRequiredMixin, View):
     def get(self, request, **kwargs):
         story = get_object_or_404(Story, pk=kwargs.get('pk'))
