@@ -1,3 +1,5 @@
-markdown2
-pytils
+django_bootstrap4==1.1.1
 Django==3.0.3
+markdown2==2.3.8
+pytils==0.3
+Pillow==7.0.0
