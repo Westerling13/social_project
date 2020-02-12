@@ -2,3 +2,8 @@
 idea
 __pycache__
 venv
+*.pyc
+*~
+db.sqlite3
+/static
+.DS_Store
