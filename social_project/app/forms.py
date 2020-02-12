@@ -1,7 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from django.core.exceptions import ValidationError
 
 from .models import Story, Profile, Comment
 
@@ -16,7 +15,7 @@ class SignUpForm(UserCreationForm):
         super().clean()
         username = self.cleaned_data['username']
         if '@' in username:
-            raise ValidationError('Извините, имя пользователя не может содержать @')
+            raise forms.ValidationError('Извините, имя пользователя не может содержать @')
 
     class Meta:
         model = User
@@ -24,9 +23,16 @@ class SignUpForm(UserCreationForm):
 
 
 class StoryAddForm(forms.ModelForm):
+    def clean_text(self):
+        data = self.cleaned_data['text']
+        as_md = self.cleaned_data['as_md']
+        if as_md and '<script' in data:
+            raise forms.ValidationError('Использование тега <script> запрещено!')
+        return data
+
     class Meta:
         model = Story
-        fields = ('title', 'as_md', 'text', 'published')
+        fields = ('title', 'as_md', 'text', 'published', 'publication_date')
 
 
 class SettingsForm(forms.ModelForm):

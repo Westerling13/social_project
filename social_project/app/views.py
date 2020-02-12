@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
 from django.views import View
 from django.views.generic import ListView, CreateView, UpdateView
 
@@ -13,11 +14,13 @@ from .models import Story, Profile, Comment
 
 
 def index(request):
+    """Главная страница"""
     return render(request, 'index.html')
 
 
 @login_required(login_url='sign_in')
 def profile_view(request, username):
+    """Профиль пользователя"""
     user = get_object_or_404(User, username=username)
     profile = get_object_or_404(Profile, user=user)
     stories = Story.objects.filter(author=user)
@@ -31,6 +34,7 @@ def profile_view(request, username):
 
 
 class UsersListView(LoginRequiredMixin, ListView):
+    """Список пользователей"""
     login_url = 'sign_in'
     model = Profile
     template_name = 'users.html'
@@ -41,6 +45,7 @@ class UsersListView(LoginRequiredMixin, ListView):
 
 
 class StoryView(LoginRequiredMixin, View):
+    """История"""
     def get(self, request, **kwargs):
         story = get_object_or_404(Story, pk=kwargs.get('pk'), slug=kwargs.get('slug'))
         form = CommentForm()
@@ -60,10 +65,11 @@ class StoryView(LoginRequiredMixin, View):
 
 
 class StoryEditView(LoginRequiredMixin, UpdateView):
+    """Изменение истории"""
     login_url = 'sign_in'
     model = Story
     template_name = 'story_edit.html'
-    fields = ['title', 'as_md', 'text', 'published']
+    fields = ['title', 'as_md', 'text', 'published', 'publication_date']
 
     def get(self, *args, **kwargs):
         user = self.request.user
@@ -76,6 +82,7 @@ class StoryEditView(LoginRequiredMixin, UpdateView):
 
 @login_required(login_url='sign_in')
 def story_delete(request, **kwargs):
+    """Удаление истории"""
     story = get_object_or_404(Story, pk=kwargs.get('pk'))
     if not request.user.is_superuser and request.user != story.author:
         raise PermissionDenied
@@ -84,16 +91,18 @@ def story_delete(request, **kwargs):
 
 
 class StoriesListView(LoginRequiredMixin, ListView):
+    """Список историй"""
     login_url = 'sign_in'
     model = Story
     template_name = 'stories.html'
     context_object_name = 'stories_list'
 
     def get_queryset(self):
-        return Story.objects.filter(published=True)
+        return Story.objects.filter(published=True, publication_date__lte=timezone.now())
 
 
 class StoryAddView(LoginRequiredMixin, CreateView):
+    """Добавление истории"""
     login_url = 'sign_in'
     form_class = StoryAddForm
     template_name = 'story_add.html'
@@ -106,6 +115,7 @@ class StoryAddView(LoginRequiredMixin, CreateView):
 
 
 class SignUpView(CreateView):
+    """Страница рагистрации"""
     template_name = 'sign_up.html'
     form_class = SignUpForm
 
@@ -126,14 +136,17 @@ class SignUpView(CreateView):
 
 
 class SignInView(LoginView):
+    """Страница аутентификации"""
     template_name = 'sign_in.html'
 
 
 class SignOutView(LogoutView):
+    """Страница подтверждения выхода"""
     template_name = 'sign_out.html'
 
 
 class SettingsView(View):
+    """Настройки пользовательского профиля"""
     def get(self, request):
         profile = get_object_or_404(Profile, user=request.user)
         form = SettingsForm(instance=profile)

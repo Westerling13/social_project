@@ -14,19 +14,24 @@
 {% endblock %}
 
 {% block content %}
-    <ul>
-        {% for story in stories_list %}
-            <li class="list-group-item mt-4">
-                <div class="d-flex align-items-center">
-                    <b class="col-6">{{ story.title }}</b>
+    {% if stories_list %}
+        <ul>
+            {% for story in stories_list %}
+                <li class="list-group-item mt-4">
+                    <div class="d-flex align-items-center">
+                        <b class="col-6">{{ story.title }}</b>
 
-                    <div class="col-6 row no-gutters justify-content-between align-items-center">
-                        <b>{{ story.creation_date.date }}</b>
-                        <span class="text-muted">{{ story.author }}</span>
-                        <a class="btn btn-info" href="{% url 'story' story.pk story.slug %}">Прочесть</a>
+                        <div class="col-6 row no-gutters justify-content-between align-items-center">
+                            <b>{{ story.creation_date.date }}</b>
+                            <span class="text-muted">{{ story.author }}</span>
+                            <a class="btn btn-info" href="{% url 'story' story.pk story.slug %}">Прочесть</a>
+                        </div>
                     </div>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-center">Здесь пока нет историй.</p>
+    {% endif %}
+
 {% endblock %}

@@ -58,7 +58,7 @@ class Story(models.Model):
     html_text = models.TextField('Обработанный текст', editable=False, default='')
     creation_date = models.DateTimeField('Дата создания', auto_now_add=True)
     edit_date = models.DateTimeField('Дата редактирования', auto_now=True)
-    publication_date = models.DateTimeField('Дата публикации', default=timezone.now())
+    publication_date = models.DateTimeField('Дата публикации', default=timezone.now)
     published = models.BooleanField('Опубликована', default=True)
     slug = models.SlugField('slug', default='', editable=False)
 
