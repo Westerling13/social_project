@@ -1,4 +1,4 @@
-###[westerling.pythonanywhere.com](https://westerling.pythonanywhere.com)
+### [westerling.pythonanywhere.com](https://westerling.pythonanywhere.com)
 
 ## Развлекательный сайт с короткими историями
 
